@@ -6,8 +6,14 @@ import android.graphics.Canvas
 import android.graphics.drawable.VectorDrawable
 import android.net.Uri
 import android.provider.MediaStore
+import android.util.Log
 import androidx.core.content.ContextCompat
+import org.json.JSONArray
+import org.json.JSONObject
 import java.io.Serializable
+import java.net.HttpURLConnection
+import java.net.URL
+import kotlin.concurrent.thread
 import kotlin.random.Random
 
 object Globals {
@@ -41,6 +47,39 @@ object StudentInfoTester{
 
         return generatedList
     }
+
+    fun getUserData(url: String): ArrayList<StudentInfo>{
+        val url = URL(url)
+        val downloadedList: ArrayList<StudentInfo> = ArrayList<StudentInfo>()
+        thread{
+        with(url.openConnection() as HttpURLConnection){
+            requestMethod="GET"
+            inputStream.bufferedReader().lines().forEach{
+       //         Log.i(Globals.TAG, it)
+
+                val json : JSONArray = JSONArray(it)
+
+                for (index in 0 until json.length()){
+                   val firstName: String =  (json.get(index) as JSONObject).get("firstname").toString()
+                    val lastName: String =  (json.get(index) as JSONObject).get("lastname").toString()
+                    val image: String =  (json.get(index) as JSONObject).get("image").toString()
+
+                    Log.i(Globals.TAG, firstName+" "+lastName+" "+image+" ")
+
+                    downloadedList.add(StudentInfo(
+                        firstName,
+                        lastName,
+                        image,
+                        -1, -1, -1, -1
+                    ))
+
+                    }
+                }
+            }
+        }
+        return ArrayList<StudentInfo>()
+    }
+
 }
 
 fun Random.generateRandomString(intRange: IntRange): String {

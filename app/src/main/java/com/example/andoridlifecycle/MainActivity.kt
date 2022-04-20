@@ -6,6 +6,11 @@ import android.view.View
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.FragmentManager
+import org.json.JSONArray
+import org.json.JSONObject
+import java.net.HttpURLConnection
+import java.net.URL
+import kotlin.concurrent.thread
 
 class MainActivity : AppCompatActivity() {
 
@@ -20,7 +25,37 @@ class MainActivity : AppCompatActivity() {
         Log.i(Globals.TAG, "Activity 1 onCreate")
         Toast.makeText(this, "Activity onCreate", Toast.LENGTH_SHORT).show()
 
-        studentsInfo = StudentInfoTester.createRandomStudents(3)
+        //studentsInfo = StudentInfoTester.createRandomStudents(3)
+
+        //val result: String = StudentInfoTester.getUserData("https://fakerapi.it/api/v1/persons?_quantity=3")
+
+        val url = URL("https://fakerapi.it/api/v1/persons?_quantity=1")
+        thread{
+            with(url.openConnection() as HttpURLConnection){
+                requestMethod="GET"
+                inputStream.bufferedReader().lines().forEach{
+                    //         Log.i(Globals.TAG, it)
+
+                    val json : JSONArray = JSONArray(it)
+
+                    for (index in 0 until json.length()){
+                        val firstName: String =  (json.get(index) as JSONObject).get("firstname").toString()
+                        val lastName: String =  (json.get(index) as JSONObject).get("lastname").toString()
+                        val image: String =  (json.get(index) as JSONObject).get("image").toString()
+
+                        Log.i(Globals.TAG, firstName+" "+lastName+" "+image+" ")
+
+                        studentsInfo.add(StudentInfo(
+                            firstName,
+                            lastName,
+                            image,
+                            -1, -1, -1, -1
+                        ))
+
+                    }
+                }
+            }
+        }
 
     }
 

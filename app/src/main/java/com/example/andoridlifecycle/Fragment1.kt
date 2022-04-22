@@ -1,6 +1,7 @@
 package com.example.andoridlifecycle
 
 import android.content.Intent
+import android.graphics.Rect
 import android.graphics.drawable.BitmapDrawable
 import android.os.Bundle
 import android.util.Log
@@ -13,6 +14,8 @@ import android.widget.Toast
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.fragment.app.Fragment
 import com.edmodo.cropper.CropImageView
+import com.example.andoridlifecycle.StudentInfoTester.UriToBitmap
+import com.example.andoridlifecycle.StudentInfoTester.getBitmap
 
 class Fragment1 : Fragment() {
 
@@ -21,6 +24,8 @@ class Fragment1 : Fragment() {
     public lateinit var image: CropImageView
 
     public var imageUri: String? = null
+
+    public var actualCropRect: Rect? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)

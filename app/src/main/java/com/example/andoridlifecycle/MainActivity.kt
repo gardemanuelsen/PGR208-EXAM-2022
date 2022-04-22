@@ -6,6 +6,11 @@ import android.view.View
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.FragmentManager
+import org.json.JSONArray
+import org.json.JSONObject
+import java.net.URL
+import kotlin.concurrent.thread
+
 
 class MainActivity : AppCompatActivity() {
 
@@ -20,8 +25,33 @@ class MainActivity : AppCompatActivity() {
         Log.i(Globals.TAG, "Activity 1 onCreate")
         Toast.makeText(this, "Activity onCreate", Toast.LENGTH_SHORT).show()
 
-        studentsInfo = StudentInfoTester.createRandomStudents(3)
+        //studentsInfo = StudentInfoTester.createRandomStudents(3)
 
+        thread {
+            val url = URL("https://fakerapi.it/api/v1/persons?_quantity=10").readText()
+
+            val json = JSONObject(url)
+            val jsonarray = json.getJSONArray("data")
+
+            Log.i(Globals.TAG, "hello")
+            for(i in 0 until jsonarray.length()){
+                val jsonobject = jsonarray.getJSONObject(i)
+
+                val firstName = jsonobject.get("firstname").toString()
+                val lastName = jsonobject.get("lastname").toString()
+                val imageUrl = jsonobject.get("image").toString()
+
+               studentsInfo.add(
+                    StudentInfo(
+                        firstName,
+                        lastName,
+                        imageUrl,
+                        -1,-1,-1,-1,-1,-1
+                    )
+                )
+                
+            }
+        }
     }
 
     override fun onStart() {
@@ -96,9 +126,11 @@ class MainActivity : AppCompatActivity() {
         var surnameView = (fragmentManager.findFragmentByTag("Fragment1") as Fragment1).surnameView.text.toString()
         var imageUri = (fragmentManager.findFragmentByTag("Fragment1") as Fragment1).imageUri.toString()
 
-        var rect = (fragmentManager.findFragmentByTag("Fragment1") as Fragment1).image.actualCropRect
+        var rect = (fragmentManager.findFragmentByTag("Fragment1") as Fragment1).actualCropRect!!
+        var imgW = (fragmentManager.findFragmentByTag("Fragment1") as Fragment1).image.width
+        var imgH = (fragmentManager.findFragmentByTag("Fragment1") as Fragment1).image.height
 
-        val newStudent: StudentInfo = StudentInfo(nameViewText, surnameView, imageUri, rect.left.toInt(), rect.top.toInt(), rect.width().toInt(), rect.height().toInt())
+        val newStudent: StudentInfo = StudentInfo(nameViewText, surnameView, imageUri, rect.left.toInt(), rect.top.toInt(), rect.right.toInt(), rect.bottom.toInt(), imgW.toInt(), imgH.toInt())
         studentsInfo.add(newStudent)
 
 

@@ -8,7 +8,7 @@ android {
 
     defaultConfig {
         applicationId "com.example.andoridlifecycle"
-        minSdk 22
+        minSdk 24
         targetSdk 31
         versionCode 1
         versionName "1.0"
@@ -19,4 +19,5 @@ dependencies {
     implementation 'com.google.android.material:material:1.4.0'
     implementation 'androidx.appcompat:appcompat:1.4.1'
     implementation 'com.edmodo:cropper:1.0.1'
+    implementation 'com.google.code.gson:gson:2.9.0'
 }

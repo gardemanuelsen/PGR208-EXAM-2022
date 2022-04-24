@@ -20,65 +20,35 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
-                android:height="100dp"
+                android:height="80dp"
                 android:layout_marginRight="10dp"
                 android:layout_marginLeft="10dp"
                 android:onClick="switchFragment"
                 android:tag="1"
-                android:text="Get Image" />
+                android:text="Choose image" />
 
             <Button
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
-                android:height="100dp"
+                android:height="80dp"
                 android:layout_marginRight="10dp"
                 android:layout_marginLeft="10dp"
                 android:onClick="switchFragment"
-                android:tag="1"
+                android:tag="3"
                 android:text="Results" />
 
             <Button
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
-                android:height="100dp"
+                android:height="80dp"
                 android:layout_marginRight="10dp"
                 android:layout_marginLeft="10dp"
                 android:onClick="switchFragment"
                 android:tag="2"
                 android:text="Saved Results" />
         </LinearLayout>
-
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="horizontal">
-
-            <Button
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:height="100dp"
-                android:layout_marginRight="50dp"
-                android:layout_marginLeft="50dp"
-                android:onClick="switchFragment"
-                android:tag="1"
-                android:text="Take Photo" />
-
-            <Button
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:height="100dp"
-                android:layout_marginLeft="50dp"
-                android:layout_marginRight="50dp"
-                android:onClick="switchFragment"
-                android:tag="2"
-                android:text="Show All" />
-        </LinearLayout>
-
-    </LinearLayout>
 
     <FrameLayout
         android:id="@+id/fragment_main"
@@ -89,8 +59,13 @@
             android:id="@+id/textView"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:gravity="center_horizontal|center_vertical"
+            android:layout_marginTop="220dp"
+            android:layout_marginBottom="200dp"
             android:textSize="50dp"
-            android:text="Image Search" />
+            android:shadowColor="@color/black"
+            android:shadowRadius="5"
+            android:textAlignment="center"
+            android:text="Reverse Image Search" />
     </FrameLayout>
+</LinearLayout>
 </LinearLayout>

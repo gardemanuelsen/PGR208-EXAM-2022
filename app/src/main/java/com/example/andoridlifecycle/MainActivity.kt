@@ -1,13 +1,17 @@
 package com.example.andoridlifecycle
 
+import android.content.ContentValues
+import android.graphics.Bitmap
 import android.os.Bundle
 import android.util.Log
 import android.view.View
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.FragmentManager
-import org.json.JSONArray
+import com.example.andoridlifecycle.StudentInfoTester.UriToBitmap
+import com.example.andoridlifecycle.StudentInfoTester.getBitmap
 import org.json.JSONObject
+import java.io.ByteArrayOutputStream
 import java.net.URL
 import kotlin.concurrent.thread
 
@@ -18,6 +22,8 @@ class MainActivity : AppCompatActivity() {
 
     private var studentsInfo = ArrayList<StudentInfo>()
 
+    private var dbHelper = Database(this)
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
@@ -25,15 +31,12 @@ class MainActivity : AppCompatActivity() {
         Log.i(Globals.TAG, "Activity 1 onCreate")
         Toast.makeText(this, "Activity onCreate", Toast.LENGTH_SHORT).show()
 
-        //studentsInfo = StudentInfoTester.createRandomStudents(3)
-
         thread {
             val url = URL("https://fakerapi.it/api/v1/persons?_quantity=10").readText()
 
             val json = JSONObject(url)
             val jsonarray = json.getJSONArray("data")
 
-            Log.i(Globals.TAG, "hello")
             for(i in 0 until jsonarray.length()){
                 val jsonobject = jsonarray.getJSONObject(i)
 
@@ -46,7 +49,7 @@ class MainActivity : AppCompatActivity() {
                         firstName,
                         lastName,
                         imageUrl,
-                        -1,-1,-1,-1,-1,-1
+                        -1,-1,-1
                     )
                 )
                 
@@ -105,33 +108,54 @@ class MainActivity : AppCompatActivity() {
                 .beginTransaction()
                 .replace(
                     R.id.fragment_main,
-                    Fragment1(),
+                    ChooseImage(),
                     "Fragment1"
                 )
                 .commit()
-        } else {
+        }
+        if(Integer.parseInt(v.getTag().toString()) == 2) {
             fragmentManager
                 .beginTransaction()
                 .replace(
                     R.id.fragment_main,
-                    Fragment2(studentsInfo),
+                    SavedResults(studentsInfo),
                     "Fragment2"
+                )
+                .commit()
+        }
+        if(Integer.parseInt(v.getTag().toString()) == 3) {
+            fragmentManager
+                .beginTransaction()
+                .replace(
+                    R.id.fragment_main,
+                    Results(),
+                    "Fragment3"
                 )
                 .commit()
         }
     }
 
     fun submit(view: View){
-        var nameViewText = (fragmentManager.findFragmentByTag("Fragment1") as Fragment1).nameView.text.toString()
-        var surnameView = (fragmentManager.findFragmentByTag("Fragment1") as Fragment1).surnameView.text.toString()
-        var imageUri = (fragmentManager.findFragmentByTag("Fragment1") as Fragment1).imageUri.toString()
+        var nameViewText = (fragmentManager.findFragmentByTag("Fragment1") as ChooseImage).nameView.text.toString()
+        var surnameView = (fragmentManager.findFragmentByTag("Fragment1") as ChooseImage).surnameView.text.toString()
+        var imageUri = (fragmentManager.findFragmentByTag("Fragment1") as ChooseImage).imageUri.toString()
 
-        var rect = (fragmentManager.findFragmentByTag("Fragment1") as Fragment1).actualCropRect!!
-        var imgW = (fragmentManager.findFragmentByTag("Fragment1") as Fragment1).image.width
-        var imgH = (fragmentManager.findFragmentByTag("Fragment1") as Fragment1).image.height
 
-        val newStudent: StudentInfo = StudentInfo(nameViewText, surnameView, imageUri, rect.left.toInt(), rect.top.toInt(), rect.right.toInt(), rect.bottom.toInt(), imgW.toInt(), imgH.toInt())
+        var imgW = (fragmentManager.findFragmentByTag("Fragment1") as ChooseImage).image.width
+        var imgH = (fragmentManager.findFragmentByTag("Fragment1") as ChooseImage).image.height
+
+        val newStudent: StudentInfo = StudentInfo(nameViewText, surnameView, imageUri, imgW.toInt(), imgH.toInt())
         studentsInfo.add(newStudent)
+
+        val os = ByteArrayOutputStream()
+        getBitmap(applicationContext, null, newStudent.imageUri, ::UriToBitmap).compress(Bitmap.CompressFormat.PNG,100,os)
+
+        dbHelper?.writableDatabase?.insert("students", null, ContentValues().apply {
+            put("firstname", newStudent.name)
+            put("lastname", newStudent.surname)
+            put("image",os.toByteArray()
+            )
+        })
 
 
         Toast.makeText(this, "Added New Person", Toast.LENGTH_SHORT).show()

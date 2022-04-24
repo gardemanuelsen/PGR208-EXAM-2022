@@ -19,7 +19,7 @@ import kotlin.concurrent.thread
 class EditActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.fragment1)
+        setContentView(R.layout.choose_image)
 
         val oldSelectedStudent :StudentInfo = (intent.getSerializableExtra("selected_student") as StudentInfo)
 
@@ -70,10 +70,6 @@ class EditActivity : AppCompatActivity() {
             if (oldSelectedStudent.imageUri != null) {
                 image = Bitmap.createBitmap(
                     image,
-                    oldSelectedStudent.x,
-                    oldSelectedStudent.y,
-                    oldSelectedStudent.w,
-                    oldSelectedStudent.h
                 )
 
                 image = Bitmap.createScaledBitmap(
@@ -88,7 +84,7 @@ class EditActivity : AppCompatActivity() {
         }
 
 
-        val submitButton: Button = findViewById<Button>(R.id.submit)
+       val submitButton: Button = findViewById<Button>(R.id.submit)
         submitButton.setOnClickListener(object : View.OnClickListener {
             override fun onClick(view: View?) {
 

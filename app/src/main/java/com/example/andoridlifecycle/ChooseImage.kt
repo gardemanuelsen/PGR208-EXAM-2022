@@ -9,7 +9,6 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.EditText
-import android.widget.ImageView
 import android.widget.Toast
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.fragment.app.Fragment
@@ -17,7 +16,7 @@ import com.edmodo.cropper.CropImageView
 import com.example.andoridlifecycle.StudentInfoTester.UriToBitmap
 import com.example.andoridlifecycle.StudentInfoTester.getBitmap
 
-class Fragment1 : Fragment() {
+class ChooseImage : Fragment() {
 
     public lateinit var nameView: EditText
     public lateinit var surnameView: EditText
@@ -25,7 +24,6 @@ class Fragment1 : Fragment() {
 
     public var imageUri: String? = null
 
-    public var actualCropRect: Rect? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -42,7 +40,7 @@ class Fragment1 : Fragment() {
         Toast.makeText(activity, "Fragment 1 onCreateView", Toast.LENGTH_SHORT).show()
 
         // Inflate the layout for this fragment
-        var view = inflater.inflate(R.layout.fragment1, container, false)
+        var view = inflater.inflate(R.layout.choose_image, container, false)
 
         nameView = view.findViewById<EditText>(R.id.name)
         surnameView = view.findViewById<EditText>(R.id.surname)

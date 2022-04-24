@@ -14,26 +14,26 @@ import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.RecyclerView
 
 
-class Fragment2(val studentsInfo: ArrayList<StudentInfo>) : Fragment() {
+class SavedResults(val studentsInfo: ArrayList<StudentInfo>) : Fragment() {
 
     var itemAdapter: ItemAdapter? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-        Log.i(Globals.TAG, "Fragment 1 onCreate")
-        Toast.makeText(activity, "Fragment 1 onCreate", Toast.LENGTH_SHORT).show()
+        Log.i(Globals.TAG, "Fragment 2 onCreate")
+        Toast.makeText(activity, "Fragment 2 onCreate", Toast.LENGTH_SHORT).show()
     }
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        Log.i(Globals.TAG, "Fragment 1 onCreateView")
-        Toast.makeText(activity, "Fragment 1 onCreateView", Toast.LENGTH_SHORT).show()
+        Log.i(Globals.TAG, "Fragment 2 onCreateView")
+        Toast.makeText(activity, "Fragment 2 onCreateView", Toast.LENGTH_SHORT).show()
 
         // Inflate the layout for this fragment
-        val view = inflater.inflate(R.layout.fragment2, container, false)
+        val view = inflater.inflate(R.layout.saved_results, container, false)
 
         val recyclerView: RecyclerView = view.findViewById<RecyclerView>(R.id.recycler_view)
         //Alternatively to defining manager in XML: recyclerView.layoutManager = LinearLayoutManager(context, LinearLayoutManager.VERTICAL ,false)
@@ -51,13 +51,8 @@ class Fragment2(val studentsInfo: ArrayList<StudentInfo>) : Fragment() {
         var onItemEditListener = object: View.OnClickListener {
             override fun onClick(view: View?) {
 
-                val position: Int = view?.tag.toString().toInt()
-                val selectedStudent: StudentInfo = studentsInfo.get(position)
-                selectedStudent.position = position
 
-                val intent: Intent = Intent(activity, EditActivity::class.java)
-                intent.putExtra("selected_student", selectedStudent)
-                startForResult.launch(intent)
+
             }
         }
 
@@ -72,9 +67,6 @@ class Fragment2(val studentsInfo: ArrayList<StudentInfo>) : Fragment() {
             val intent = result.data
             val updatedStudentInfo: StudentInfo = (intent?.getSerializableExtra("selected_student") as StudentInfo)
 
-            studentsInfo.set(updatedStudentInfo.position, updatedStudentInfo)
-
-            itemAdapter?.notifyDataSetChanged()
         }
     }
 

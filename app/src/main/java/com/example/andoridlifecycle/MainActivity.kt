@@ -1,17 +1,14 @@
 package com.example.andoridlifecycle
 
 import android.content.ContentValues
-import android.graphics.Bitmap
 import android.os.Bundle
 import android.util.Log
+import android.view.PixelCopy.request
 import android.view.View
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.FragmentManager
-import com.example.andoridlifecycle.StudentInfoTester.UriToBitmap
-import com.example.andoridlifecycle.StudentInfoTester.getBitmap
 import org.json.JSONObject
-import java.io.ByteArrayOutputStream
 import java.net.URL
 import kotlin.concurrent.thread
 
@@ -24,6 +21,8 @@ class MainActivity : AppCompatActivity() {
 
     private var dbHelper = Database(this)
 
+
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
@@ -32,6 +31,8 @@ class MainActivity : AppCompatActivity() {
         Toast.makeText(this, "Activity onCreate", Toast.LENGTH_SHORT).show()
 
         thread {
+
+
             val url = URL("https://fakerapi.it/api/v1/persons?_quantity=10").readText()
 
             val json = JSONObject(url)
@@ -147,14 +148,14 @@ class MainActivity : AppCompatActivity() {
         val newStudent: StudentInfo = StudentInfo(nameViewText, surnameView, imageUri, imgW.toInt(), imgH.toInt())
         studentsInfo.add(newStudent)
 
-        val os = ByteArrayOutputStream()
-        getBitmap(applicationContext, null, newStudent.imageUri, ::UriToBitmap).compress(Bitmap.CompressFormat.PNG,100,os)
+       // val os = ByteArrayOutputStream()
+        //getBitmap(applicationContext, null, newStudent.imageUri, ::UriToBitmap).compress(Bitmap.CompressFormat.PNG,100,os)
 
-        dbHelper?.writableDatabase?.insert("students", null, ContentValues().apply {
+        dbHelper?.writableDatabase?.insert("people", null, ContentValues().apply {
             put("firstname", newStudent.name)
             put("lastname", newStudent.surname)
-            put("image",os.toByteArray()
-            )
+            put("image", newStudent.imageUri)
+
         })
 
 

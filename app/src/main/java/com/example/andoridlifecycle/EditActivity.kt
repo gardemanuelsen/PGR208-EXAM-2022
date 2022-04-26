@@ -7,6 +7,7 @@ import android.os.Bundle
 import android.view.View
 import android.widget.Button
 import android.widget.EditText
+import android.widget.ImageView
 import androidx.appcompat.app.AppCompatActivity
 import com.edmodo.cropper.CropImageView
 import com.example.andoridlifecycle.StudentInfoTester.UriToBitmap
@@ -30,7 +31,7 @@ class EditActivity : AppCompatActivity() {
         surnameView.setText(oldSelectedStudent.surname)
 
 
-        val imageView: CropImageView = findViewById<CropImageView>(R.id.image)
+        val imageView: ImageView = findViewById<ImageView>(R.id.image)
 
         thread {
             var image : Bitmap? = null

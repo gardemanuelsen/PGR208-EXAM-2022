@@ -9,6 +9,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.EditText
+import android.widget.ImageView
 import android.widget.Toast
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.fragment.app.Fragment
@@ -20,7 +21,7 @@ class ChooseImage : Fragment() {
 
     public lateinit var nameView: EditText
     public lateinit var surnameView: EditText
-    public lateinit var image: CropImageView
+    public lateinit var image: ImageView
 
     public var imageUri: String? = null
 
@@ -45,7 +46,7 @@ class ChooseImage : Fragment() {
         nameView = view.findViewById<EditText>(R.id.name)
         surnameView = view.findViewById<EditText>(R.id.surname)
 
-        image = view.findViewById<CropImageView>(R.id.image)
+        image = view.findViewById<ImageView>(R.id.image)
         image.setOnClickListener{
 
             var i = Intent()

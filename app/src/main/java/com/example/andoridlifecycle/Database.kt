@@ -6,7 +6,7 @@ import android.database.sqlite.SQLiteOpenHelper
 
 class Database(context: Context) : SQLiteOpenHelper(context, DATABASE_NAME, null, DATABASE_VERSION) {
     override fun onCreate(db: SQLiteDatabase) {
-        db.execSQL("create table people(id primary key, firstname text, lastname text, image blob)")
+        db.execSQL("create table people(id int primary key, firstname text, lastname text, image blob)")
     }
     override fun onUpgrade(db: SQLiteDatabase, oldVersion: Int, newVersion: Int) {
         // This database is only a cache for online data, so its upgrade policy is

@@ -20,6 +20,9 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
+                android:height="80dp"
+                android:layout_marginRight="10dp"
+                android:layout_marginLeft="10dp"
                 android:onClick="switchFragment"
                 android:tag="1"
                 android:text="Add New" />
@@ -28,6 +31,9 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
+                android:height="80dp"
+                android:layout_marginRight="10dp"
+                android:layout_marginLeft="10dp"
                 android:onClick="switchFragment"
                 android:tag="2"
                 android:text="Show All" />
@@ -44,7 +50,8 @@
             android:id="@+id/textView"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
+            android:textSize="50dp"
             android:gravity="center_horizontal|center_vertical"
-            android:text="Add or Edit Student Info" />
+            android:text="Reverse Image Search" />
     </FrameLayout>
 </LinearLayout>

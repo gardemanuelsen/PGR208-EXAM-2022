@@ -36,7 +36,7 @@ class Fragment2(val studentsInfo: ArrayList<StudentInfo>) : Fragment() {
 
         val recyclerView: RecyclerView = view.findViewById<RecyclerView>(R.id.recycler_view)
 
-        var onItemClickListener = object: View.OnClickListener {
+        var onItemClickListener = object : View.OnClickListener {
             override fun onClick(view: View?) {
 
                 val position: Int = view?.tag.toString().toInt()
@@ -46,7 +46,7 @@ class Fragment2(val studentsInfo: ArrayList<StudentInfo>) : Fragment() {
             }
         }
 
-        var onItemEditListener = object: View.OnClickListener {
+        var onItemEditListener = object : View.OnClickListener {
             override fun onClick(view: View?) {
 
                 val position: Int = view?.tag.toString().toInt()
@@ -65,15 +65,17 @@ class Fragment2(val studentsInfo: ArrayList<StudentInfo>) : Fragment() {
         return view
     }
 
-    val startForResult = registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result: ActivityResult ->
-        if (result.resultCode == Activity.RESULT_OK) {
-            val intent = result.data
-            val updatedStudentInfo: StudentInfo = (intent?.getSerializableExtra("selected_student") as StudentInfo)
+    val startForResult =
+        registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result: ActivityResult ->
+            if (result.resultCode == Activity.RESULT_OK) {
+                val intent = result.data
+                val updatedStudentInfo: StudentInfo =
+                    (intent?.getSerializableExtra("selected_student") as StudentInfo)
 
-            studentsInfo.set(updatedStudentInfo.position, updatedStudentInfo)
+                studentsInfo.set(updatedStudentInfo.position, updatedStudentInfo)
 
-            itemAdapter?.notifyDataSetChanged()
+                itemAdapter?.notifyDataSetChanged()
+            }
         }
-    }
 
 }

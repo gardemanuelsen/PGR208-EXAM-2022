@@ -46,7 +46,7 @@ class Fragment1 : Fragment() {
         nameView = view.findViewById<EditText>(R.id.name)
 
         image = view.findViewById<CropImageView>(R.id.image)
-        image.setOnClickListener{
+        image.setOnClickListener {
 
             var i = Intent()
 
@@ -59,20 +59,21 @@ class Fragment1 : Fragment() {
         return view
     }
 
-    var startForResult = registerForActivityResult(ActivityResultContracts.StartActivityForResult()){
+    var startForResult =
+        registerForActivityResult(ActivityResultContracts.StartActivityForResult()) {
 
-        imageUri = it.data?.data.toString()
+            imageUri = it.data?.data.toString()
 
-        var bitmap_image = getBitmap(requireContext(), null, imageUri, ::UriToBitmap)
+            var bitmap_image = getBitmap(requireContext(), null, imageUri, ::UriToBitmap)
 
-        image.layoutParams = image.layoutParams.apply {
+            image.layoutParams = image.layoutParams.apply {
 
-            width = bitmap_image.width
-            height = bitmap_image.height
+                width = bitmap_image.width
+                height = bitmap_image.height
+            }
+
+            image.setImageBitmap(bitmap_image)
+            image.background = BitmapDrawable(resources, bitmap_image)
         }
-
-        image.setImageBitmap(bitmap_image)
-        image.background = BitmapDrawable(resources, bitmap_image)
-    }
 
 }

@@ -20,7 +20,13 @@ object Globals {
     val TAG = "AndroidLifeCycle"
 }
 
-data class StudentInfo(var info: String, var imageUri: String?, var imageH: Int, var imageW: Int, var position: Int=-1): Serializable {
+data class StudentInfo(
+    var info: String,
+    var imageUri: String?,
+    var imageH: Int,
+    var imageW: Int,
+    var position: Int = -1
+) : Serializable {
 }
 
 object StudentInfoTester {

@@ -16,7 +16,6 @@ import java.io.ByteArrayOutputStream
 import java.net.URL
 import kotlin.concurrent.thread
 
-
 class MainActivity : AppCompatActivity() {
 
     private lateinit var fragmentManager: FragmentManager
@@ -33,24 +32,24 @@ class MainActivity : AppCompatActivity() {
         Toast.makeText(this, "Activity onCreate", Toast.LENGTH_SHORT).show()
 
         thread {
-            val url = URL("http://api-edu.gtl.ai/api/v1/imagesearch/bing?url=https://gtl-bucket.s3.amazonaws.com/9d01afaafbdf4154a69932486b8efe22.jpg").readText()
+            val url =
+                URL("http://api-edu.gtl.ai/api/v1/imagesearch/bing?url=https://gtl-bucket.s3.amazonaws.com/9d01afaafbdf4154a69932486b8efe22.jpg").readText()
 
             val jsonarray = JSONArray(url)
 
-            for(i in 0 until jsonarray.length()){
+            for (i in 0 until jsonarray.length()) {
 
                 val domain = (jsonarray.get(i) as JSONObject).getString("domain")
                 val il = (jsonarray.get(i) as JSONObject).getString("image_link")
 
-
-               studentsInfo.add(
+                studentsInfo.add(
                     StudentInfo(
                         domain,
                         il,
-                        -1,-1,-1
+                        -1, -1, -1
                     )
                 )
-                
+
             }
         }
     }
@@ -122,26 +121,27 @@ class MainActivity : AppCompatActivity() {
         }
     }
 
-    fun submit(view: View){
-        var nameViewText = (fragmentManager.findFragmentByTag("Fragment1") as Fragment1).nameView.text.toString()
-        var imageUri = (fragmentManager.findFragmentByTag("Fragment1") as Fragment1).imageUri.toString()
+    fun submit(view: View) {
+        var nameViewText =
+            (fragmentManager.findFragmentByTag("Fragment1") as Fragment1).nameView.text.toString()
+        var imageUri =
+            (fragmentManager.findFragmentByTag("Fragment1") as Fragment1).imageUri.toString()
 
         var imgW = (fragmentManager.findFragmentByTag("Fragment1") as Fragment1).image.width
         var imgH = (fragmentManager.findFragmentByTag("Fragment1") as Fragment1).image.height
 
-        val newStudent: StudentInfo = StudentInfo(nameViewText, imageUri, imgW.toInt(), imgH.toInt())
+        val newStudent: StudentInfo =
+            StudentInfo(nameViewText, imageUri, imgW.toInt(), imgH.toInt())
         studentsInfo.add(newStudent)
 
-
-         //val os = ByteArrayOutputStream()
+        //val os = ByteArrayOutputStream()
         //getBitmap(applicationContext, null, newStudent.imageUri, ::UriToBitmap).compress(Bitmap.CompressFormat.PNG,100,os)
 
-         dbHelper?.writableDatabase?.insert("images", null, ContentValues().apply {
-             put("info", newStudent.info)
-             put("image", newStudent.imageUri)
+        dbHelper?.writableDatabase?.insert("images", null, ContentValues().apply {
+            put("info", newStudent.info)
+            put("image", newStudent.imageUri)
 
-         })
-
+        })
 
         Toast.makeText(this, "Added New Person", Toast.LENGTH_SHORT).show()
     }

@@ -21,68 +21,64 @@ class EditActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.fragment1)
 
-        val oldSelectedStudent :StudentInfo = (intent.getSerializableExtra("selected_student") as StudentInfo)
+        val oldSelectedStudent: StudentInfo =
+            (intent.getSerializableExtra("selected_student") as StudentInfo)
 
         val infoView: EditText = findViewById<EditText>(R.id.name)
         infoView.setText(oldSelectedStudent.info)
 
-        /*val surnameView: EditText = findViewById<EditText>(R.id.surname)
-        surnameView.setText(oldSelectedStudent.surname)*/
-
-
         val imageView: CropImageView = findViewById<CropImageView>(R.id.image)
 
         thread {
-            var image : Bitmap? = null
+            var image: Bitmap? = null
 
-        if(oldSelectedStudent.imageUri.toString().startsWith("http")){
-            with(URL(oldSelectedStudent.imageUri).openConnection() as HttpURLConnection){
-                requestMethod="GET"
+            if (oldSelectedStudent.imageUri.toString().startsWith("http")) {
+                with(URL(oldSelectedStudent.imageUri).openConnection() as HttpURLConnection) {
+                    requestMethod = "GET"
 
-                setRequestProperty(
-                    "User-Agent",
-                    "Mozilla/5.0"
+                    setRequestProperty(
+                        "User-Agent",
+                        "Mozilla/5.0"
+                    )
+
+                    val bm: Bitmap = BitmapFactory.decodeStream(inputStream)
+
+                    imageView.post { imageView.setImageBitmap(bm) }
+                }
+            } else {
+                image = if (oldSelectedStudent.imageUri != null)
+                    getBitmap(
+                        this,
+                        null,
+                        oldSelectedStudent.imageUri,
+                        ::UriToBitmap
+                    ) else getBitmap(
+                    this,
+                    R.drawable.ic_launcher_foreground,
+                    null,
+                    ::VectorDrawableToBitmap
                 )
-
-                val bm : Bitmap =BitmapFactory.decodeStream(inputStream)
-
-                imageView.post{imageView.setImageBitmap(bm)}
-            }
-            }else{
-               image = if ( oldSelectedStudent.imageUri != null)
-                   getBitmap(
-                       this,
-                       null,
-                       oldSelectedStudent.imageUri,
-                       ::UriToBitmap
-                   ) else getBitmap(
-                   this,
-                   R.drawable.ic_launcher_foreground,
-                   null,
-                   ::VectorDrawableToBitmap
-                   )
-            image = Bitmap.createScaledBitmap(
-                image,
-                oldSelectedStudent.imageH,
-                oldSelectedStudent.imageW,
-                false
-            )
-            if (oldSelectedStudent.imageUri != null) {
-                image = Bitmap.createBitmap(
-                    image
-                )
-
                 image = Bitmap.createScaledBitmap(
                     image,
-                    (resources.displayMetrics.density * 200).toInt(),
-                    (resources.displayMetrics.density * 200).toInt(),
+                    oldSelectedStudent.imageH,
+                    oldSelectedStudent.imageW,
                     false
                 )
-            }
-            imageView.setImageBitmap(image)
+                if (oldSelectedStudent.imageUri != null) {
+                    image = Bitmap.createBitmap(
+                        image
+                    )
+
+                    image = Bitmap.createScaledBitmap(
+                        image,
+                        (resources.displayMetrics.density * 200).toInt(),
+                        (resources.displayMetrics.density * 200).toInt(),
+                        false
+                    )
+                }
+                imageView.setImageBitmap(image)
             }
         }
-
 
         val submitButton: Button = findViewById<Button>(R.id.submit)
         submitButton.setOnClickListener(object : View.OnClickListener {

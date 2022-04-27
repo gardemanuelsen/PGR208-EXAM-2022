@@ -32,11 +32,9 @@ class Fragment2(val studentsInfo: ArrayList<StudentInfo>) : Fragment() {
         Log.i(Globals.TAG, "Fragment 1 onCreateView")
         Toast.makeText(activity, "Fragment 1 onCreateView", Toast.LENGTH_SHORT).show()
 
-        // Inflate the layout for this fragment
         val view = inflater.inflate(R.layout.fragment2, container, false)
 
         val recyclerView: RecyclerView = view.findViewById<RecyclerView>(R.id.recycler_view)
-        //Alternatively to defining manager in XML: recyclerView.layoutManager = LinearLayoutManager(context, LinearLayoutManager.VERTICAL ,false)
 
         var onItemClickListener = object: View.OnClickListener {
             override fun onClick(view: View?) {

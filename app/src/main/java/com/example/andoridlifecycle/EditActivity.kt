@@ -23,11 +23,11 @@ class EditActivity : AppCompatActivity() {
 
         val oldSelectedStudent :StudentInfo = (intent.getSerializableExtra("selected_student") as StudentInfo)
 
-        val nameView: EditText = findViewById<EditText>(R.id.name)
-        nameView.setText(oldSelectedStudent.name)
+        val infoView: EditText = findViewById<EditText>(R.id.name)
+        infoView.setText(oldSelectedStudent.info)
 
-        val surnameView: EditText = findViewById<EditText>(R.id.surname)
-        surnameView.setText(oldSelectedStudent.surname)
+        /*val surnameView: EditText = findViewById<EditText>(R.id.surname)
+        surnameView.setText(oldSelectedStudent.surname)*/
 
 
         val imageView: CropImageView = findViewById<CropImageView>(R.id.image)
@@ -69,11 +69,7 @@ class EditActivity : AppCompatActivity() {
             )
             if (oldSelectedStudent.imageUri != null) {
                 image = Bitmap.createBitmap(
-                    image,
-                    oldSelectedStudent.x,
-                    oldSelectedStudent.y,
-                    oldSelectedStudent.w,
-                    oldSelectedStudent.h
+                    image
                 )
 
                 image = Bitmap.createScaledBitmap(
@@ -93,8 +89,7 @@ class EditActivity : AppCompatActivity() {
             override fun onClick(view: View?) {
 
                 val updatedSelectedStudent: StudentInfo = oldSelectedStudent.copy()
-                updatedSelectedStudent.name = nameView.text.toString()
-                updatedSelectedStudent.surname = surnameView.text.toString()
+                updatedSelectedStudent.info = infoView.text.toString()
 
                 val intent: Intent = Intent()
                 intent.putExtra("selected_student", updatedSelectedStudent)

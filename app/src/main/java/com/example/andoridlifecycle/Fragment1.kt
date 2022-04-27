@@ -41,11 +41,9 @@ class Fragment1 : Fragment() {
         Log.i(Globals.TAG, "Fragment 1 onCreateView")
         Toast.makeText(activity, "Fragment 1 onCreateView", Toast.LENGTH_SHORT).show()
 
-        // Inflate the layout for this fragment
         var view = inflater.inflate(R.layout.fragment1, container, false)
 
         nameView = view.findViewById<EditText>(R.id.name)
-        surnameView = view.findViewById<EditText>(R.id.surname)
 
         image = view.findViewById<CropImageView>(R.id.image)
         image.setOnClickListener{

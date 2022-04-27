@@ -1,13 +1,18 @@
 package com.example.andoridlifecycle
 
+import android.content.ContentValues
+import android.graphics.Bitmap
 import android.os.Bundle
 import android.util.Log
 import android.view.View
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.FragmentManager
+import com.example.andoridlifecycle.StudentInfoTester.UriToBitmap
+import com.example.andoridlifecycle.StudentInfoTester.getBitmap
 import org.json.JSONArray
 import org.json.JSONObject
+import java.io.ByteArrayOutputStream
 import java.net.URL
 import kotlin.concurrent.thread
 
@@ -18,6 +23,8 @@ class MainActivity : AppCompatActivity() {
 
     private var studentsInfo = ArrayList<StudentInfo>()
 
+    private var dbHelper = Database(this)
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
@@ -25,35 +32,22 @@ class MainActivity : AppCompatActivity() {
         Log.i(Globals.TAG, "Activity 1 onCreate")
         Toast.makeText(this, "Activity onCreate", Toast.LENGTH_SHORT).show()
 
-        //studentsInfo = StudentInfoTester.createRandomStudents(3)
-
         thread {
-            val url = URL("http://api-edu.gtl.ai/api/v1/imagesearch/bing?url=https://gtl-bucket.s3.amazonaws.com/93644b75778b4be5a4a4e6c4af8ebdce.jpg").readText()
-
-            //val json = JSONObject(url)
-            //val jsonarray = json.getJSONArray("data")
+            val url = URL("http://api-edu.gtl.ai/api/v1/imagesearch/bing?url=https://gtl-bucket.s3.amazonaws.com/9d01afaafbdf4154a69932486b8efe22.jpg").readText()
 
             val jsonarray = JSONArray(url)
 
-            Log.i(Globals.TAG, "hello")
             for(i in 0 until jsonarray.length()){
-                //val jsonobject = jsonarray.getJSONObject(i)
 
-               /* val firstName = jsonobject.get("firstname").toString()
-                val lastName = jsonobject.get("lastname").toString()
-                val imageUrl = jsonobject.get("image").toString()*/
-
-                val identi = (jsonarray.get(i) as JSONObject).getString("identifier")
                 val domain = (jsonarray.get(i) as JSONObject).getString("domain")
                 val il = (jsonarray.get(i) as JSONObject).getString("image_link")
 
 
                studentsInfo.add(
                     StudentInfo(
-                        identi,
                         domain,
                         il,
-                        -1,-1,-1,-1,-1,-1
+                        -1,-1,-1
                     )
                 )
                 
@@ -130,15 +124,23 @@ class MainActivity : AppCompatActivity() {
 
     fun submit(view: View){
         var nameViewText = (fragmentManager.findFragmentByTag("Fragment1") as Fragment1).nameView.text.toString()
-        var surnameView = (fragmentManager.findFragmentByTag("Fragment1") as Fragment1).surnameView.text.toString()
         var imageUri = (fragmentManager.findFragmentByTag("Fragment1") as Fragment1).imageUri.toString()
 
-        var rect = (fragmentManager.findFragmentByTag("Fragment1") as Fragment1).actualCropRect!!
         var imgW = (fragmentManager.findFragmentByTag("Fragment1") as Fragment1).image.width
         var imgH = (fragmentManager.findFragmentByTag("Fragment1") as Fragment1).image.height
 
-        val newStudent: StudentInfo = StudentInfo(nameViewText, surnameView, imageUri, rect.left.toInt(), rect.top.toInt(), rect.right.toInt(), rect.bottom.toInt(), imgW.toInt(), imgH.toInt())
+        val newStudent: StudentInfo = StudentInfo(nameViewText, imageUri, imgW.toInt(), imgH.toInt())
         studentsInfo.add(newStudent)
+
+
+         //val os = ByteArrayOutputStream()
+        //getBitmap(applicationContext, null, newStudent.imageUri, ::UriToBitmap).compress(Bitmap.CompressFormat.PNG,100,os)
+
+         dbHelper?.writableDatabase?.insert("images", null, ContentValues().apply {
+             put("info", newStudent.info)
+             put("image", newStudent.imageUri)
+
+         })
 
 
         Toast.makeText(this, "Added New Person", Toast.LENGTH_SHORT).show()

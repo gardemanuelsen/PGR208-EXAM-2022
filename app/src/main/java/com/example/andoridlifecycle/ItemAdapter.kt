@@ -25,19 +25,15 @@ class ItemAdapter(
         val nameView: TextView = TextView(parent.context)
         nameView.setPadding(10, 0, 10, 0)
 
-        val surnameView: TextView = TextView(parent.context)
-        surnameView.setPadding(10, 10, 10, 10)
-
         val ll2: LinearLayout = LinearLayout(parent.context)
         ll2.layoutParams = LinearLayout.LayoutParams(
             0,
             LinearLayout.LayoutParams.WRAP_CONTENT, 0.3f)
 
         val editButton = Button(parent.context)
-        editButton.setText("Edit")
+        editButton.setText("Show")
 
         ll1.addView(nameView)
-        ll1.addView(surnameView)
 
         ll2.addView(editButton)
 
@@ -57,8 +53,7 @@ class ItemAdapter(
         val studentInfo: StudentInfo = studentsInfo.get(position)
 
         holder.itemView.setTag(position)
-        (((holder.itemView as LinearLayout).getChildAt(0) as LinearLayout).getChildAt(0) as TextView).setText(studentInfo.name)
-        (((holder.itemView as LinearLayout).getChildAt(0) as LinearLayout).getChildAt(1) as TextView).setText(studentInfo.surname)
+        (((holder.itemView as LinearLayout).getChildAt(0) as LinearLayout).getChildAt(0) as TextView).setText(studentInfo.info)
 
         ((holder.itemView as LinearLayout).getChildAt(0) as LinearLayout).setOnClickListener{
             onItemClickListener.onClick(holder.itemView)

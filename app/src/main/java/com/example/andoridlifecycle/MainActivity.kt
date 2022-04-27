@@ -28,24 +28,31 @@ class MainActivity : AppCompatActivity() {
         //studentsInfo = StudentInfoTester.createRandomStudents(3)
 
         thread {
-            val url = URL("https://fakerapi.it/api/v1/persons?_quantity=10").readText()
+            val url = URL("http://api-edu.gtl.ai/api/v1/imagesearch/bing?url=https://gtl-bucket.s3.amazonaws.com/93644b75778b4be5a4a4e6c4af8ebdce.jpg").readText()
 
-            val json = JSONObject(url)
-            val jsonarray = json.getJSONArray("data")
+            //val json = JSONObject(url)
+            //val jsonarray = json.getJSONArray("data")
+
+            val jsonarray = JSONArray(url)
 
             Log.i(Globals.TAG, "hello")
             for(i in 0 until jsonarray.length()){
-                val jsonobject = jsonarray.getJSONObject(i)
+                //val jsonobject = jsonarray.getJSONObject(i)
 
-                val firstName = jsonobject.get("firstname").toString()
+               /* val firstName = jsonobject.get("firstname").toString()
                 val lastName = jsonobject.get("lastname").toString()
-                val imageUrl = jsonobject.get("image").toString()
+                val imageUrl = jsonobject.get("image").toString()*/
+
+                val identi = (jsonarray.get(i) as JSONObject).getString("identifier")
+                val domain = (jsonarray.get(i) as JSONObject).getString("domain")
+                val il = (jsonarray.get(i) as JSONObject).getString("image_link")
+
 
                studentsInfo.add(
                     StudentInfo(
-                        firstName,
-                        lastName,
-                        imageUrl,
+                        identi,
+                        domain,
+                        il,
                         -1,-1,-1,-1,-1,-1
                     )
                 )

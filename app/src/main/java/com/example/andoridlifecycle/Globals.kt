@@ -25,7 +25,7 @@ data class StudentInfo(var name: String, var surname: String, var imageUri: Stri
 
 object StudentInfoTester {
 
-    fun createRandomStudents(amount: Int): ArrayList<StudentInfo> {
+    /*fun createRandomStudents(amount: Int): ArrayList<StudentInfo> {
 
         val generatedList: ArrayList<StudentInfo> = ArrayList<StudentInfo>()
 
@@ -50,7 +50,7 @@ object StudentInfoTester {
         }
 
         return generatedList
-    }
+    }*/
 
     /* fun getUserData(url: String): ArrayList<StudentInfo>{
         val url = URL(url)
@@ -86,12 +86,12 @@ object StudentInfoTester {
 
 }*/
 
-    fun Random.generateRandomString(intRange: IntRange): String {
+   /* fun Random.generateRandomString(intRange: IntRange): String {
         var randomString: String = ""
         repeat(intRange.random()) { randomString += ('a'..'z').random().toString() }
         return randomString
     }
-
+*/
     fun VectorDrawableToBitmap(context: Context, id: Int?, uri: String?): Bitmap {
         val drawable = (ContextCompat.getDrawable(context!!, id!!) as VectorDrawable)
         val image = Bitmap.createBitmap(

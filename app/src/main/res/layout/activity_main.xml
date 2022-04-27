@@ -50,8 +50,9 @@
             android:id="@+id/textView"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:textSize="50dp"
             android:gravity="center_horizontal|center_vertical"
-            android:text="Reverse Image Search" />
+            android:text="Reverse Image Search"
+            android:textSize="80dp"
+            android:textStyle="italic" />
     </FrameLayout>
 </LinearLayout>
